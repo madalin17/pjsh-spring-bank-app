@@ -10,6 +10,8 @@ import com.luxoft.bankapp.service.BankingImpl;
 import com.luxoft.bankapp.model.Client.Gender;
 import com.luxoft.bankapp.service.storage.ClientRepository;
 import com.luxoft.bankapp.service.storage.MapClientRepository;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class BankApplication {
 
@@ -18,22 +20,24 @@ public class BankApplication {
 
     public static void main(String[] args) {
 
-        ClientRepository repository = new MapClientRepository();
-        Banking banking = initialize(repository);
+        ApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+
+        Banking banking = initialize(context);
 
         workWithExistingClients(banking);
 
         bankingServiceDemo(banking);
 
-//        bankReportsDemo(repository);
+        bankReportsDemo(context);
     }
 
-    public static void bankReportsDemo(ClientRepository repository) {
+    public static void bankReportsDemo(ApplicationContext context) {
 
         System.out.println("\n=== Using BankReportService ===\n");
 
-        BankReportService reportService = new BankReportServiceImpl();
-        reportService.setRepository(repository);
+        BankReportService reportService = context.getBean(BankReportServiceImpl.class);
+        ClientRepository clientRepository = context.getBean("clientRepository", MapClientRepository.class);
+        reportService.setRepository(clientRepository);
 
         System.out.println("Number of clients: " + reportService.getNumberOfBankClients());
 
@@ -100,23 +104,14 @@ public class BankApplication {
     /*
      * Method that creates a few clients and initializes them with sample values
      */
-    public static Banking initialize(ClientRepository repository) {
+    public static Banking initialize(ApplicationContext context) {
 
-        Banking banking = new BankingImpl();
-        banking.setRepository(repository);
+        Banking banking = context.getBean(BankingImpl.class);
+        ClientRepository clientRepository = context.getBean("clientRepository", MapClientRepository.class);
+        banking.setRepository(clientRepository);
 
-        Client client_1 = new Client(CLIENT_NAMES[0], Gender.MALE);
-
-        AbstractAccount savingAccount = new SavingAccount(1000);
-        client_1.addAccount(savingAccount);
-
-        AbstractAccount checkingAccount = new CheckingAccount(1000);
-        client_1.addAccount(checkingAccount);
-
-        Client client_2 = new Client(CLIENT_NAMES[1], Gender.MALE);
-
-        AbstractAccount checking = new CheckingAccount(1500);
-        client_2.addAccount(checking);
+        Client client_1 = context.getBean("client1", Client.class);
+        Client client_2 = context.getBean("client2", Client.class);
 
         banking.addClient(client_1);
         banking.addClient(client_2);

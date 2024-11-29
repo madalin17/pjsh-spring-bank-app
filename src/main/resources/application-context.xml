@@ -5,4 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="clientRepository" class="com.luxoft.bankapp.service.storage.MapClientRepository"/>
+
+    <bean id="banking" class="com.luxoft.bankapp.service.BankingImpl" autowire="byType"/>
+
+    <bean id="bankReport" class="com.luxoft.bankapp.service.BankReportServiceImpl" autowire="byType"/>
+
+    <import resource="test-clients.xml"/>
 </beans>
