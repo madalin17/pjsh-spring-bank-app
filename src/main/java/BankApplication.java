@@ -36,8 +36,6 @@ public class BankApplication {
         System.out.println("\n=== Using BankReportService ===\n");
 
         BankReportService reportService = context.getBean(BankReportServiceImpl.class);
-        ClientRepository clientRepository = context.getBean("clientRepository", MapClientRepository.class);
-        reportService.setRepository(clientRepository);
 
         System.out.println("Number of clients: " + reportService.getNumberOfBankClients());
 
@@ -107,8 +105,6 @@ public class BankApplication {
     public static Banking initialize(ApplicationContext context) {
 
         Banking banking = context.getBean(BankingImpl.class);
-        ClientRepository clientRepository = context.getBean("clientRepository", MapClientRepository.class);
-        banking.setRepository(clientRepository);
 
         Client client_1 = context.getBean("client1", Client.class);
         Client client_2 = context.getBean("client2", Client.class);
