@@ -1,7 +1,9 @@
 package com.luxoft.bankapp.service.audit;
 
+import com.luxoft.bankapp.service.audit.events.*;
+
 public interface Audit {
-    void auditDeposit(long accountId, double amount);
-    void auditWithdraw(long accountId, double amount, WithdrawState state);
-    void auditBalance(long accountId);
+    void auditOperation(DepositEvent event);
+    void auditOperation(WithdrawEvent event);
+    void auditOperation(BalanceEvent event);
 }
