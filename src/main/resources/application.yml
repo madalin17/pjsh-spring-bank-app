@@ -1,0 +1,17 @@
+spring.profiles.active: dev
+
+---
+
+spring:
+  profiles: dev
+debug: true
+
+---
+
+spring:
+  profiles: prod
+debug: false
+
+---
+
+feed.filename: demo.feed
