@@ -53,6 +53,7 @@ public class BankApplicationTask3Tests {
     private Client client2;
 
     @Autowired
+    @Qualifier("placeholderConfigurer1")
     private PropertySourcesPlaceholderConfigurer placeholderConfigurer;
 
     @BeforeEach
